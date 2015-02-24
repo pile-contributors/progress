@@ -1,0 +1,131 @@
+/**
+ * @file progress-config.h
+ * @brief The content of this file is dynamically generated at compile time by CMake.
+ * @author Nicu Tofan <nicu.tofan@gmail.com>
+ * @copyright Copyright 2014 piles contributors. All rights reserved.
+ * This file is released under the
+ * [MIT License](http://opensource.org/licenses/mit-license.html)
+ */
+
+#ifndef GUARD_PROGRESS_CONFIG_H_INCLUDE
+#define GUARD_PROGRESS_CONFIG_H_INCLUDE
+
+/**
+ * @def Qt5Core_FOUND
+ * @brief When defined indicates that the Qt 5 headers are available
+ */
+#ifndef Qt5Core_FOUND
+#cmakedefine Qt5Core_FOUND
+#endif
+
+/**
+ * @def Qt4_FOUND
+ * @brief When defined indicates that the Qt 4 headers are available
+ */
+#ifndef Qt4_FOUND
+#cmakedefine Qt4_FOUND
+#endif
+
+/**
+ * @def PILES_HAVE_QT
+ * @brief When defined indicates that either Qt 4 or Qt 5 headers are available
+ */
+#if defined(Qt5Core_FOUND) || defined(Qt4_FOUND)
+#ifndef PILES_HAVE_QT
+#define PILES_HAVE_QT
+#endif
+#endif
+
+// use Qt definitions when available
+#ifdef PILES_HAVE_QT
+#include <QtGlobal>
+#endif
+
+//! the name of this project
+#define PROGRESS_PROJECT_NAME       "@PROGRESS_NAME@"
+
+//! major version (ABI not preserved between these)
+#define PROGRESS_MAJOR_VERSION      (@PROGRESS_MAJOR_VERSION@)
+
+//! minor version; ABI is preserved
+#define PROGRESS_MINOR_VERSION      (@PROGRESS_MINOR_VERSION@)
+
+//! bug fixes
+#define PROGRESS_PATCH_VERSION      (@PROGRESS_PATCH_VERSION@)
+
+//! the version as a 32-bit integer
+#define PROGRESS_VERSION            (\
+    PROGRESS_MAJOR_VERSION * 0x100000 + \
+    PROGRESS_MINOR_VERSION * 0x1000 + \
+    PROGRESS_PATCH_VERSION * 0x1)
+
+//! version as a string
+#define PROGRESS_VERSION_STRING     "@PROGRESS_VERSION_STRING@"
+
+//! when it was build (UTC)
+#define PROGRESS_BUILD_TIME         "@PROGRESS_BUILD_TIME@"
+
+
+/**
+ * @def PROGRESS_DEBUG
+ * @brief Indicates whether the debug features should be enabled or disabled
+ */
+#ifndef PROGRESS_DEBUG
+#  ifdef PROGRESS_FORCE_DEBUG
+#    define PROGRESS_DEBUG 1
+#  else
+#cmakedefine PROGRESS_DEBUG
+#  endif
+#endif
+
+
+/**
+ * @def PROGRESS_STATIC
+ * @brief If defined it indicates a static library being build
+ */
+#cmakedefine PROGRESS_STATIC
+
+/**
+ * @def PROGRESS_PILE
+ * @brief If defined it indicates a pile usage
+ */
+#cmakedefine PROGRESS_PILE
+
+
+/**
+ * @def PROGRESS_SHARED
+ * @brief If defined it indicates a shared library
+ *
+ * PROGRESS_SHARED is defined when building the project
+ * and undefined when a file from another project
+ * includes the file.
+ */
+
+
+/**
+ * @def PROGRESS_EXPORT
+ * @brief makes the sources compatible with all kinds of deployments.
+ */
+#if defined(PROGRESS_STATIC)
+#   define      PROGRESS_EXPORT
+#elif defined(PROGRESS_PILE)
+#   define      PROGRESS_EXPORT      @PROGRESS_EXPORT@
+#elif defined(PROGRESS_SHARED)
+#   ifdef PILES_HAVE_QT
+#       define  PROGRESS_EXPORT      Q_DECL_EXPORT
+#   elif defined(_MSC_VER)
+#       define  PROGRESS_EXPORT      __declspec(dllexport)
+#   else
+#       define  PROGRESS_EXPORT      __attribute__((visibility("default")))
+#   endif
+#else
+#   ifdef PILES_HAVE_QT
+#       define  PROGRESS_EXPORT      Q_DECL_IMPORT
+#   elif defined(_MSC_VER)
+#       define  PROGRESS_EXPORT      __declspec(dllimport)
+#   else
+#       define  PROGRESS_EXPORT      __attribute__((visibility("default")))
+#   endif
+#endif
+
+#endif // GUARD_PROGRESS_CONFIG_H_INCLUDE
