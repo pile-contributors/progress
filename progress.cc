@@ -184,7 +184,7 @@ bool Progress::init (const QString & title, int64_t total_size)
 
         if (total_size <= 0) {
             PRGR_DEBUG (
-                        "  total size (%"PRIi64") must be a "
+                        "  total size (%" PRIi64 ") must be a "
                         "positive integer\n", total_size);
             break;
         }
@@ -388,7 +388,7 @@ bool Progress::step (int64_t chunk_size, int64_t offset)
 
         if (chunk_size < 0) {
             PRGR_DEBUG (
-                        "  chunk size (%"PRIi64") must be a "
+                        "  chunk size (%" PRIi64 ") must be a "
                         "positive integer\n", chunk_size);
             break;
         }
@@ -479,7 +479,7 @@ void Progress::signalChange (bool b_bypass_checks)
     PRGR_TRACE_ENTRY;
     for (;;) {
         if (!b_bypass_checks && (stack_.size () > cutoff_level_)) {
-            V_PRGR_DEBUG (" drop signal (size %"PRIi64" > cutoff %"PRIi64")",
+            V_PRGR_DEBUG (" drop signal (size %" PRIi64 " > cutoff %" PRIi64 ")",
                               stack_.size (), cutoff_level_);
             break;
         }
@@ -499,14 +499,14 @@ void Progress::signalChange (bool b_bypass_checks)
                     (in_parent * p.size_in_parent_) /
                     total_progress;
 
-            V_PRGR_DEBUG ("    at level %d progress is %"PRIi64" out of %"PRIi64"\n",
+            V_PRGR_DEBUG ("    at level %d progress is %" PRIi64 " out of %" PRIi64 "\n",
                               i_level, in_parent, total_progress);
 
             ++i_level;
             in_parent = updated_value;
         }
 
-        V_PRGR_DEBUG ("  new progress is %"PRIi64", old one is %"PRIi64"\n",
+        V_PRGR_DEBUG ("  new progress is %" PRIi64 ", old one is %" PRIi64 "\n",
                           in_parent, prev_prog_);
 
         // compute the difference and see if is above the treshold
