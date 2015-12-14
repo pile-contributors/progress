@@ -126,7 +126,7 @@ public:
             bool update_parent = true);
 
 
-    //! Tell the label for current opperation.
+    //! Tell the label for current operation.
     inline const QString &
     currentStatus () const {
         return current_status_;
@@ -217,7 +217,7 @@ public:
         b_should_stop_ = false;
     }
 
-    //! Tell if the process / opperation should stop.
+    //! Tell if the process / operation should stop.
     inline bool
     shouldStop () const {
         return b_should_stop_;

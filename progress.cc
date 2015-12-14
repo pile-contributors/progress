@@ -87,7 +87,7 @@
 /**
  * @class Progress
  *
- * The class helps in keeping track of an asynchronous opperation.
+ * The class helps in keeping track of an asynchronous operation.
  * It divides the task (total_progress_) into portions and has
  * a current portion defined by an offset and a size. The progress that
  * is reported is scaled inside the portion and the offset is applied
@@ -101,7 +101,7 @@
  * The class does not store a list for each level and stepping to a new portion
  * removes previous portion at the same level.
  *
- * The label for current opperation is given by first non-empty label that
+ * The label for current operation is given by first non-empty label that
  * was provided, starting from the last portion. Thus sub-tasks have the
  * option to leave the label empty, thus inheriting the text from the
  * parent. In practive this value is cachec in current_status_ to avoid
