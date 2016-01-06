@@ -94,9 +94,9 @@
  * for the final report.
  *
  * The mechanism allows the caller to initialize the structure,
- * set current portion then allow the subtask to report the progress
+ * set current portion then allow the sub-task to report the progress
  * without knowing anything about its internals or size. The parent task
- * only decides how much of its progress the subtask is going to take.
+ * only decides how much of its progress the sub-task is going to take.
  *
  * The class does not store a list for each level and stepping to a new portion
  * removes previous portion at the same level.
@@ -104,7 +104,7 @@
  * The label for current operation is given by first non-empty label that
  * was provided, starting from the last portion. Thus sub-tasks have the
  * option to leave the label empty, thus inheriting the text from the
- * parent. In practive this value is cachec in current_status_ to avoid
+ * parent. In practice this value is cached in current_status_ to avoid
  * recursive search each time.
  *
  * To use the class for a simple task that only has a single level
@@ -113,7 +113,7 @@
  *
  * The user has the ability to control the number of signals the
  * class emits by choosing the maximum depth of the stack for which the
- * signals are emited (0 disables the signals) and by choosing
+ * signals are emitted (0 disables the signals) and by choosing
  * the granularity (the *total progress* must
  * advance by at least that much to trigger a signal).
  * By default all levels emit signals and the granularity is 1.
@@ -290,6 +290,7 @@ void Progress::enter (
         b_ret = true;
         break;
     }
+    Q_UNUSED(b_ret);
     PRGR_DUMP("  after enter()", (*this));
     PRGR_TRACE_EXIT;
 }
@@ -303,7 +304,6 @@ void Progress::enter (
 void Progress::finish (bool update_parent)
 {
     PRGR_TRACE_ENTRY;
-    bool b_ret = false;
     for (;;) {
         if (stack_.isEmpty ()) break;
 
@@ -335,7 +335,6 @@ void Progress::finish (bool update_parent)
         PRGR_DUMP("  after finish()", (*this));
 
         signalChange ();
-        b_ret = true;
         break;
     }
     PRGR_TRACE_EXIT;
@@ -360,7 +359,7 @@ void Progress::finish (bool update_parent)
  * p.finish ();
  * @endcode
  *
- * The progres can alternatively be set directly:
+ * The progress can alternatively be set directly:
  *
  * @code
  * Progress p;
@@ -371,7 +370,7 @@ void Progress::finish (bool update_parent)
  * p.finish ();
  * @endcode
  *
- * @param chunk_size Size of current portion not including the provious work.
+ * @param chunk_size Size of current portion not including the previous work.
  * @param offset Previous work (use cached value by default).
  * @return true if the process should continue, false to stop
  */
@@ -488,11 +487,11 @@ void Progress::signalChange (bool b_bypass_checks)
 
         const Portion & f = stack_.first ();
         int64_t in_parent = f.progress_;
-        int64_t total_progress;
+        int64_t total_progress = 0;
         int i_level = 0;
-        int64_t updated_value;
 
         foreach (const Portion & p, stack_) {
+            int64_t updated_value;
             total_progress = p.tot_size_;
             updated_value =
                     p.offset_in_parent_ +
@@ -509,7 +508,7 @@ void Progress::signalChange (bool b_bypass_checks)
         V_PRGR_DEBUG ("  new progress is %" PRIi64 ", old one is %" PRIi64 "\n",
                           in_parent, prev_prog_);
 
-        // compute the difference and see if is above the treshold
+        // compute the difference and see if is above the threshold
         if (!b_bypass_checks) {
             int64_t difference = in_parent - prev_prog_;
             if (difference < granularity_) {
@@ -542,3 +541,4 @@ void Progress::signalChange (bool b_bypass_checks)
 }
 /* ========================================================================= */
 
+void Progress::anchorVtable () const {}

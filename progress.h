@@ -25,12 +25,17 @@ class PROGRESS_EXPORT Progress {
 
     //! Represents a level in our list of levels.
     struct Portion {
+        // cppcheck-suppress unusedStructMember
         int64_t offset_in_parent_;
+        // cppcheck-suppress unusedStructMember
         int64_t size_in_parent_;
 
+        // cppcheck-suppress unusedStructMember
         int64_t tot_size_;
+        // cppcheck-suppress unusedStructMember
         int64_t progress_;
 
+        // cppcheck-suppress unusedStructMember
         void * user_data_;
 
         QString current_status_;
@@ -92,6 +97,20 @@ public:
     virtual
     ~Progress ();
 
+    //! assignment operator
+    Progress& operator=( const Progress& other) {
+        stack_ = other.stack_;
+        cutoff_level_ = other.cutoff_level_;
+        granularity_ = other.granularity_;
+        prev_prog_ = other.prev_prog_;
+        b_should_stop_ = other.b_should_stop_;
+        current_status_ = other.current_status_;
+        user_data_ = other.user_data_;
+        kb_simple_signal_ = other.kb_simple_signal_;
+        kb_full_signal_ = other.kb_full_signal_;
+        return *this;
+    }
+
 
     //! Prepares the progress for a run.
     bool
@@ -103,7 +122,7 @@ public:
     void
     end ();
 
-    //! Teell if the instance was initialized (init() was called).
+    //! Tell if the instance was initialized (init() was called).
     inline bool
     isInitialized () const {
         return !stack_.isEmpty ();
@@ -246,6 +265,7 @@ private:
             bool b_bypass_checks = false);
 
 
+public: virtual void anchorVtable() const;
 }; // class Progress
 
 

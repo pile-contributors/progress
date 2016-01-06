@@ -12,19 +12,27 @@
 
 #include <progress/progress-config.h>
 
-#if 0
+#ifndef DEBUG_OFF
+#   define DEBUG_OFF 0
+#endif
+
+#ifndef DEBUG_ON
+#   define DEBUG_ON 0
+#endif
+
+#if DEBUG_OFF
 #    define PROGRESS_DEBUGM printf
 #else
 #    define PROGRESS_DEBUGM black_hole
 #endif
 
-#if 0
+#if DEBUG_OFF
 #    define PROGRESS_TRACE_ENTRY printf("PROGRESS ENTRY %s in %s[%d]\n", __func__, __FILE__, __LINE__)
 #else
 #    define PROGRESS_TRACE_ENTRY
 #endif
 
-#if 0
+#if DEBUG_OFF
 #    define PROGRESS_TRACE_EXIT printf("PROGRESS EXIT %s in %s[%d]\n", __func__, __FILE__, __LINE__)
 #else
 #    define PROGRESS_TRACE_EXIT
